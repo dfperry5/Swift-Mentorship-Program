@@ -8,7 +8,7 @@ My mentor is [Shyamal Chandra](https://github.com/shyamalschandra).
 
 ## Topics
 
-1. [SwiftUI](swiftui/swiftUI-index.md)
+1. [SwiftUI](swiftui/index.md)
 2. [Accessibility](./accessibility/index.md)
 3. [Sourcery](./sourcery/index.md)
 4. [Vapor](./vapor/index.md)
