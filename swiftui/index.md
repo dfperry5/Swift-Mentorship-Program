@@ -7,7 +7,7 @@ SwiftUI provides views, controls, and layout structures for declaring your appâ€
 
 ### Topics
 
-1. The App Protocol
+1. [The App Protocol](app/AppProtocol.md)
 
 #### Sources
 1. [Works Cited](sources.md)
