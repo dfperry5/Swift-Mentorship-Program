@@ -75,3 +75,48 @@ Let's add a background color to our entire application!
 
 7. Now, lets learn about a Z-Stack. A Z-Sack is a View where each individual, successive view child view has a higher Z-Axis value than the one preceding it. This means, that in our example if you think about the Z-STack as the depth of the view (going into the screen) - then the `backgroundGradient` we build is the first level, then the `ContentView()` sits "on top" of that gradient.
 
+## Font Styling
+
+### font(_:)
+
+Let's make our "Hello World" within the ContentView be a different font size. Using [Apple's Human Interface Guidelines for Typography](https://developer.apple.com/design/human-interface-guidelines/foundations/typography/), pick a font size that you want to go with, see the list below:
+    - ![Font Sizers](images/Font-Sizes-Typography.png)
+
+1. I am going to use `title2`. Open the file `SwiftUI-Sample-Marvel/ContentView.swift`. It should look like this:
+    - ```swift
+        import SwiftUI
+        struct ContentView: View {
+            var body: some View {
+            Text("Hello, world!")
+                .padding()
+            }
+        }
+    ```
+
+2. Now, add the `.font` modifier to the `Text()` view in your code. It should look something like this:
+    - ```swift
+        import SwiftUI
+
+        struct ContentView: View {
+            var body: some View {
+            Text("Hello, world!")
+                .font(.title2)
+                .padding()
+            }
+        }
+    ```
+
+3. Check it out in preview! Great job changing the font-size!
+    - The original:
+        - ![Original Font Size](images/Original-default-font.png)
+    - The new font size:
+        - ![New Font Size](images/Title2-Font.png)
+
+4. See the complete code for [this section here](https://github.com/dfperry5/SwiftUI-Sample-Marvel/commit/2d922ba52cac819582ed9908582b9c4dc176624d)!
+
+### fontWeight(_:)
+
+### foregroundColor(_:)
+
+
+

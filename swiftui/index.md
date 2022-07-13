@@ -18,6 +18,7 @@ If you want to follow along with the code - check it out [here](https://github.c
 ### Topics
 
 1. [App Creation](AppCreation/index.md)
+2. [View Modifiers, Background Color, and Font Style](BackgroundColor-FontStyle-View-Modifiers/index.md)
 
 #### Sources
 1. [Works Cited](sources.md)
