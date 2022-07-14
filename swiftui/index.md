@@ -10,6 +10,8 @@ Now, I don't know about you, but I am huge Marvel fan! So - lets use a [public M
 
 The goal will be to let a user select a team of 5 heroes, and fight against 5 that the "computer" selects. For the initial pass - the battle will just be random. Some improvement may come later!
 
+In this section we will learn about SwiftUI and use it to compose our app's user interface.
+
 ### The Repository
 
 If you want to follow along with the code - check it out [here](https://github.com/dfperry5/SwiftUI-Sample-Marvel). Feel free to copy, fork, or whatever you want to follow along! 

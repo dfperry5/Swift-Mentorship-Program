@@ -1,6 +1,16 @@
 # Intro to View Modifiers, Background Color, and Font Styling
 
 ## Intro to View Modifiers
+View Modifiers are prevelant in SwiftUI and are defined as anything that conforms to the `ViewModifier` protocol.
+    - Declaration
+        - ```swift
+            protocol ViewModifier
+        ``` 
+
+View Modifiers are defined as a modifier you apply to a view or another view modifier, producting a different version of the original value. Basically, its something you can add to a view, that returns a modified version of that view. View Modifiers can also be stacked - you add a font, font-weight, and padding to a view - and it looks different! We'll go into some examples below.
+
+It's also possible to create your own view modifiers - when you have some reusable functionality that you would want to apply to any other views. 
+
 
 ## Background Color
 
@@ -115,8 +125,76 @@ Let's make our "Hello World" within the ContentView be a different font size. Us
 4. See the complete code for [this section here](https://github.com/dfperry5/SwiftUI-Sample-Marvel/commit/2d922ba52cac819582ed9908582b9c4dc176624d)!
 
 ### fontWeight(_:)
+Let's continue the process and make our text bold! Return, once more, to the file `SwiftUI-Sample-Marvel/ContentView.swift`.
+
+1. Right now, your view should look like this:
+    - ```swift
+        struct ContentView: View {
+            var body: some View {
+                Text("Hello, world!")
+                    .font(.title2)
+                    .padding()
+                }
+        }
+    ```
+
+2. To update the font weight we need to use the `.fontWeight(_:)` view modifier. It modifies a TextView and takes in a `Font.Weight` parameter. To view the different types of `Font.Weight`'s possible - check out [Apples documentation](https://developer.apple.com/documentation/swiftui/font/weight). Let's try to add it to the code. Underneath the `.font(..)` modifier you added in the previous step - add a new `.fontWeight(.bold)` one like so:
+    - ```swift
+        struct ContentView: View {
+            var body: some View {
+                Text("Hello, world!")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding()
+                }
+        }
+    ```
+
+3. Check out your work in the Preview!
+    - Before:
+        - ![Original Font Weight](images/Original-Font.png)
+    - After:
+        - ![Updated Font Weight](images/Bold-Font.png)
 
 ### foregroundColor(_:)
+
+Great work so far! Let's keep on trucking! This time - lets change the color of our font! Back to our ContentView file - `SwiftUI-Sample-Marvel/ContentView.swift`.
+
+1. At this point your view should look like this:
+    - ```swift
+        struct ContentView: View {
+            var body: some View {
+                Text("Hello, world!")
+                    .font(.title2)
+                    .padding()
+                }
+        }
+    ```
+
+2. To update the color of your text, use the `.foregroundColor(:_)` view modifier. This changes the color of the foreground of any view you add it to. It takes in a `Color` object as a parameter. To view more options - check out the list of [provided color options by Apple](https://developer.apple.com/documentation/swiftui/color). I'm going to make my pink! To do this, add the `.foregroundColor(.pink)` modifier after the `.fontWeight(.bold)` one you added in the previous section. Your code should look like below:
+    - ```swift
+        struct ContentView: View {
+            var body: some View {
+                Text("Hello, world!")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.pink)
+                    .padding()
+            }
+        }
+    ``` 
+
+3. Check it out in preview! You've done some really awesome work!
+     - Before:
+        - ![No-Font-Color](images/Bold-Font.png)
+     - After:
+        - ![Pink-Background](images/Pink-Background.png)
+
+
+## Conclusion
+
+This section was really intended for you to get familiar with Preview, Running your app, and playing around with View Modifiers. Next, we're going to dive into the creation of the App! Before that though, take a look at your beautiful product! For me, it looks like:
+    - ![Ch-2-Final-Product](images/Final-App.jpg)
 
 
 
