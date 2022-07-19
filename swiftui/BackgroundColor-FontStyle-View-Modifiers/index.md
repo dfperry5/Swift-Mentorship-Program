@@ -194,7 +194,7 @@ Great work so far! Let's keep on trucking! This time - lets change the color of 
 ## Conclusion
 
 This section was really intended for you to get familiar with Preview, Running your app, and playing around with View Modifiers. Next, we're going to dive into the creation of the App! Before that though, take a look at your beautiful product! For me, it looks like:
-    - ![Ch-2-Final-Product](images/Final-App.jpg)
+    - ![Ch-2-Final-Product](images/Final-App.png)
 
 
 

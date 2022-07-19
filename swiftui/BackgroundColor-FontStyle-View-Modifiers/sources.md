@@ -4,3 +4,4 @@
 2. https://developer.apple.com/documentation/swiftui/view/background(alignment:content:)
 3. https://developer.apple.com/documentation/swiftui/zstack
 4. https://developer.apple.com/design/human-interface-guidelines/foundations/typography/
+5. https://developer.apple.com/documentation/swiftui/viewmodifier

@@ -92,3 +92,128 @@
     - Notice the use of Coding Keys - where we define that the `imageExtension` attribute of the `MarvelImage` struct - corresponds to the `extension` attribute on the `Image` in the Marvel documentation.
 
 ## Calling the Service
+
+1. Let's return to the `MarvelService.swift` file. We are now going to add in additional functions to actually make the request. Let's create two different functions.
+    - Inside your empty `MarvelService` struct, create the private function `buildUrlString`, that returns a string. The function should look like below:
+        - ```swift
+                private func buildUrlString() -> String {}
+            ```
+    - Create a second function, this one will be public and called `getCharacters`, it will be asynchronous, it can throw an error, and it wll return an instance of `Models.CharacterDataWrapper`. The function signature should look like below:
+        - ```swift
+                public func getCharacters() async throws -> Models.CharacterDataWrapper {}
+            ```
+
+2. Now, lets fill out the `buildUrlString` function. The purpose of this function is to add in the additional URL parameters required for the service to work. Visit the Marvel Developer documentation for [Authorization](https://developer.marvel.com/documentation/authorization). 
+    - Generally, we would try to do the client-side authorization, but that is a bit more of an involved process. Instead, we will follow the `Authentication for Server-Side Applications`. The process described here is creating a timestamp URL Parameter (`ts`), the public API Key `apikey`, and a hash value (`hash`) that is 'a md5 (a hasing algorithim) digest of the ts parameter, your private key and your public key (e.g. md5(ts+privateKey+publicKey)'.
+
+3. Let's create the timestamp (`ts` value). Inside the `buildUrlString` function, add this line:
+    - ```swift
+            let timeStamp =  Int64((Date().timeIntervalSince1970 * 1000.0).rounded())
+        ``` 
+    - This converts the Day to an epoch (IE miliseconds since 1970), and rounds it to make sure there are no decimals present which would mess up the URL String.
+
+4. Next, define the hash String. This will just be a string combination of the timestamp you just created, the private key, and the public key. Define this varibale as `hashString`, like below:
+    - ```swift
+            let hashString = timeStamp.description + Config.privateKey + Config.publicKey
+        ```
+
+5. We are now ready to create the hash value. First, we must import CryptoKit to get access to the md5 alogirthm. At the top of the file import this library like below:
+    - ```swift
+            import CryptoKit
+        ```
+    - Now, add a third line to the `buildUrlString` function that creates the md5 hash.
+        - ```swift
+                let hashValue = Insecure.MD5.hash(data: hashString.data(using: .utf8) ?? Data())
+            ```
+
+6. We're almost done with this function! We now need to retrieve the digest from the hash. This is done with a single line, like below:
+    - ```swift
+            let hash = hashValue.map { String(format: "%02hhx", $0) }.joined()
+        ```
+    - Finally, let's put it all together to define a URL String.
+        - ```swift
+                return Config.URL + "?ts=\(timeStamp.description)&apikey=\(Config.publicKey)&hash=\(hash)"
+            ```
+
+7. The final `buildUrlString` function looks like: 
+    - ```swift
+            private func buildUrlString() -> String {
+                let timeStamp =  Int64((Date().timeIntervalSince1970 * 1000.0).rounded())
+                let hashString = timeStamp.description + Config.privateKey + Config.publicKey
+                let hashValue = Insecure.MD5.hash(data: hashString.data(using: .utf8) ?? Data())
+                let hash = hashValue.map { String(format: "%02hhx", $0) }.joined()
+                
+                return Config.URL + "?ts=\(timeStamp.description)&apikey=\(Config.publicKey)&hash=\(hash)"
+            }
+        ```
+
+8. Now, it's time to put this together to build and make the request. As this is an asynchrous function, we must wrap everything in a `do/catch` block. Go ahead and fill out the catch block with a log for the error and a fatalError.
+    - Now youre code should look like this:
+        - ```swift
+                  public func getCharacters() async throws -> Models.CharacterDataWrapper {
+                    do {
+                    } catch {
+                        print("Error - ! \(error)")
+                        fatalError("Couldn't create response")
+                    }
+                }
+            ```
+
+9. Let's begin filling out the `do` piece of the function. First, let's get the URL. To do this, we will use our  `buildUrlString` function we just finished writing. Wrap this in a guard statement, to make sure the URL is created. If it fails, throw another fatalError.
+    - ```swift
+            public func getCharacters() async throws -> Models.CharacterDataWrapper {
+                do {
+                    guard let url = URL(string: self.buildUrlString()) else {
+                        fatalError("Missing URL")
+                    }
+                } catch {
+                    print("Error - ! \(error)")
+                    fatalError("Couldn't create response")
+                }
+            }
+        ```
+
+10. Now, let's build the request, using the built-in Swift URLRequest, and providing it with the URL created in the previous step. 
+    - ```swift
+            public func getCharacters() async throws -> Models.CharacterDataWrapper {
+                do {
+                    guard let url = URL(string: self.buildUrlString()) else {
+                        fatalError("Missing URL")
+                    }
+                    let request = URLRequest(url: url)
+
+                } catch {
+                    print("Error - ! \(error)")
+                    fatalError("Couldn't create response")
+                }
+            }
+        ```
+
+11. Now lets make the request, using Apples Async / Await framework and URLSession. Pass in the request you just crated to the shared URLSession's data functionm like below:
+    - ```swift
+            let (data, response) = try await URLSession.shared.data(for: request)
+        ```
+        - Notice that we're using try (cause the function can throw an error) and the `await` keyword which signals that we should wait for this function to return, and is what makes the `async` keyword in the function signature necessary.
+
+12. At this point, we are now ready to parse the response, decode it, and return it as the `CharacterDataWrapper`. We are first going to check the response objects status code. If that is not 200, throw an error. After that, lets use the JSONDecoder to convert the data to a Swift structure, `CharacterDataWrapper`. Your code in the function should now look like below:
+    - ```swift
+            public func getCharacters() async throws -> Models.CharacterDataWrapper {
+                do {
+                    guard let url = URL(string: self.buildUrlString()) else {
+                        fatalError("Missing URL")
+                    }
+                    let request = URLRequest(url: url)
+                    let (data, response) = try await URLSession.shared.data(for: request)
+                    guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+                        fatalError("Error while fetching data")
+                    }
+                    let wrapper = try JSONDecoder().decode(Models.CharacterDataWrapper.self, from: data)
+                    return wrapper
+                } catch {
+                    print("Error - ! \(error)")
+                    fatalError("Couldn't create response")
+                }
+            }
+        ```
+
+13. Voila! You have created a function to call the Marvel API, used extensions, private and public keys, CryptoKit, and perhaps most interestingly async/await! Next we will call this from the basic UI!
