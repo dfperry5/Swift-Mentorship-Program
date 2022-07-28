@@ -21,6 +21,8 @@ If you want to follow along with the code - check it out [here](https://github.c
 
 1. [App Creation](AppCreation/index.md)
 2. [View Modifiers, Background Color, and Font Style](BackgroundColor-FontStyle-View-Modifiers/index.md)
+3. [The Marvel API and Data Consumption](MarvelAPI/index.md)
+4. [Begin The UI](BeginTheUI/index.md)
 
 #### Sources
 1. [Works Cited](sources.md)
